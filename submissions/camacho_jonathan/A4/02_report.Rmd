@@ -45,17 +45,6 @@ data_for_dl <- reactive({
   dat <- select(countries_density, country, continent = continent.x, lifeExp, pupulation = pop, areaInSqKm, pop_density)
 })
 
-# I could figure out why when rendering using runfile.R, the output object is not found.
-# output$downloadCSV <- downloadHandler(
-#   filename = 'data.csv',
-#   content = function(file) {
-#     write_csv(data_for_dl(), file)
-#   }
-# )
-# 
-# downloadLink('downloadCSV', label = 'Download CSV for data')
-
-# Select data according to selectInput tool
 select_continent <- reactive({
        selected_data <- countries_density[countries_density$continent.x == input$continents, ]
        return(selected_data)

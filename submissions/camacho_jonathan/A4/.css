@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <style type="text/css">
+
+            p {
+                font-size: 24px;
+                font-weight: bold;
+                background-color: red;
+                color: white;
+            }
+
+        </style>
+    </head>
+    <body>
+        <p>If I were to ask you, as a mere paragraph, would you say that I
+        have style?</p>
+    </body>
+</html>
