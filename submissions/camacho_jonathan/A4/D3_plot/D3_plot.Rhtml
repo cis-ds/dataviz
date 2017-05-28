@@ -1,51 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>D3 Page Template</title>
-        <script type="text/javascript" src="d3/d3.js"></script>
-        <style type="text/css">
-		
-			div.bar {
-				display: inline-block;
-				width: 20px;
-				height: 75px;	/* Gets overriden by D3-assigned height below */
-				margin-right: 2px;
-				background-color: blue;
-				margin-right: 2px;
-			}
-		
-	</style>
-    </head>
-    <body>
-        <script type="text/javascript">
-              var dataset = [];                         //Initialize empty array
-              var w = 500;
-              var h = 50;
-              
-              for (var i = 0; i < 25; i++) {            //Loop 25 times
-                     var newNumber = Math.round(Math.random() * 30);   //New random number (0-30)
-                     dataset.push(newNumber);              //Add new number to array
-                     }
-                     
-                     
-              
-              d3.select("body").selectAll("div")
-               .data(dataset)
-               .enter()
-               .append("div")
-               .attr("class", "bar")
-               .style("height", function(d) {
-                     var barHeight = d * 5;  //Scale up by factor of 5
-                     return barHeight + "px";
-                     });
-                     
-              var svg = d3.select("body")
-                     .append("svg")
-                     .attr("width", w)
-                     .attr("height", h);
-               
-        </script>
-        
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>D3 Demo: Linear scales</title>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+    <style type="text/css">
+        /* No style rules here yet */       
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+
+        //Width and height
+        var w = 900;
+        var h = 500;
+        var padding = 20;
+        var dataset = [];
+
+//          var dataset = [
+//                          [5, 20], [480, 90], [250, 50], [100, 33], [330, 95],
+//                          [410, 12], [475, 44], [25, 67], [85, 21], [220, 88],
+//                          [600, 150]
+//                        ];
+
+        d3.csv("data/countries_density.csv", function(data) {
+              //console.log(data[0]);
+              dataset = data;
+              });
+
+
+
+        //Create scale functions
+        var xScale = d3.scale.linear()
+                             .domain([0, d3.max(dataset, function(d) { return d[1]; })])
+                             .range([padding, w - padding * 2]);
+
+        var yScale = d3.scale.linear()
+                             .domain([0, d3.max(dataset, function(d) { return d[1]; })])
+                             .range([h - padding, padding]);
+
+        var rScale = d3.scale.linear()
+                             .domain([0, d3.max(dataset, function(d) { return d[1]; })])
+                             .range([2, 5]);
+
+        //Create SVG element
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+
+        svg.selectAll("circle")
+           .data(dataset)
+           .enter()
+           .append("circle")
+           .attr("cx", function(d) {
+                return xScale(d[1]);
+           })
+           .attr("cy", function(d) {
+                return yScale(d[1]);
+           })
+           .attr("r", function(d) {
+                return rScale(d[1]);
+           });
+    </script>
+</body>
 </html>
